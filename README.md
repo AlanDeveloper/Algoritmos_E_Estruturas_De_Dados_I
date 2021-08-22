@@ -11,3 +11,8 @@
 ```
 > ./<filename>
 ```
+
+## Para excluir os compilados
+```
+> find . -type f -iname \*.exe -delete
+```

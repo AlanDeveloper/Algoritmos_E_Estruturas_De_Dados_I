@@ -9,10 +9,11 @@ int *colunaMatriz(int **mat, int m, int n, int ncoluna);
 void imprimeMatriz(int **mat, int m, int n);
 void imprimeVetor(int *vet, int n);
 int **realocarMatriz(int **mat, int m, int n);
+void **liberaMatriz(int **mat, int m);
 
 int main()
 {
-  int **matriz = NULL, *vet = NULL, escolha, m = 0, n = 0, soma, nColuna = 0;
+  int **matriz = NULL, *vet = NULL, escolha, m = 0, n = 0, soma = 0, nColuna = 0;
 
   for (;;)
   {
@@ -57,11 +58,11 @@ int main()
       imprimeMatriz(matriz, m, n);
       break;
     case 7:
+      liberaMatriz(matriz, m);
       exit(0);
       break;
     }
     free(vet);
-    free(matriz);
   }
 
   return 0;
@@ -91,10 +92,10 @@ int **criaMatriz(int m, int n)
 {
   int **matriz = NULL;
 
-  matriz = (int **)(malloc(sizeof(int) * m));
-  for (size_t i = 0; i < n; i++)
+  matriz = (int **)malloc(m * sizeof(int *));
+  for (size_t i = 0; i < m; i++)
   {
-    matriz[i] = (int *)(malloc(sizeof(int) * n));
+    matriz[i] = (int *)malloc(n * sizeof(int));
   }
 
   if (matriz == NULL)
@@ -133,54 +134,54 @@ int somaMatriz(int **mat, int m, int n)
   return soma;
 }
 
-int *colunaMatriz(int **mat, int m, int n, int ncoluna)
-{
-  int *vetor = NULL, *v = NULL;
-  vetor = (int *)(malloc(sizeof(int) * m));
-
-  for (size_t i = 0; i < m; i++)
-  {
-    for (size_t j = 0; j < n; j++)
-    {
-      vetor = &mat[i][ncoluna];
-    }
-  }
-  return vetor;
-}
-
 void imprimeMatriz(int **mat, int m, int n)
 {
   for (size_t i = 0; i < m; i++)
   {
     for (size_t j = 0; j < n; j++)
     {
-      printf("\nPosicao[%d][%d]: %d", i, j, mat[i][j]);
+      printf("\nPosicao[%ld][%ld]: %d", i, j, mat[i][j]);
     }
     printf("\n");
   }
+}
+
+int *colunaMatriz(int **mat, int m, int n, int ncoluna)
+{
+  int *vetor = NULL;
+  vetor = (int *)calloc(m, sizeof(int));
+
+  for (size_t i = 0; i < m; i++)
+  {
+    vetor[i] = mat[i][ncoluna];
+  }
+  return vetor;
 }
 
 void imprimeVetor(int *vet, int n)
 {
   for (size_t i = 0; i < n; i++)
   {
-    printf("\nPosicao[%d]: %d", i, vet[i]);
+    printf("\nPosicao[%ld]: %d", i, vet[i]);
   }
   printf("\n");
 }
 
 int **realocarMatriz(int **mat, int m, int n)
 {
-  mat = (int **)(realloc(mat, sizeof(int) * m));
-  for (size_t i = 0; i < m; i++)
+  mat = (int **)calloc(m, sizeof(int *));
+  for (int i = 0; i < m; i++)
   {
-    mat[i] = (int *)(realloc(mat[i], sizeof(int) * n));
-  }
-
-  if (mat == NULL)
-  {
-    printf("Nao foi possivel alocar memoria!");
-    exit(1);
+    mat[i] = (int *)calloc(n, sizeof(int));
   }
   return mat;
+}
+
+void **liberaMatriz(int **mat, int m)
+{
+  for (size_t i = 0; i < m; i++)
+  {
+    free(mat[i]);
+  }
+  free(mat);
 }

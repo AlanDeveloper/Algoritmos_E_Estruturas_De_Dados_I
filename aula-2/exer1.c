@@ -37,11 +37,11 @@ int main()
       deletar(lista);
       break;
     case 4:
+      free(lista);
       exit(0);
       break;
     }
   }
-  free(lista);
 
   return 0;
 }

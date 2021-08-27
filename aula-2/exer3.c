@@ -59,10 +59,10 @@ int main()
       break;
     case 7:
       liberaMatriz(matriz, m);
+      free(vet);
       exit(0);
       break;
     }
-    free(vet);
   }
 
   return 0;

@@ -38,11 +38,16 @@ int main()
       deletar(head);
       break;
     case 4:
+      while (head != NULL)
+      {
+        Pessoa *del = head;
+        head = head->prox;
+        free(del);
+      }
       exit(0);
       break;
     }
   }
-  free(head);
 
   return 0;
 }
